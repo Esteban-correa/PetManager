@@ -1,0 +1,81 @@
+# ======================
+# TYPES
+# ======================
+
+type Producto {
+    productoId: ID!
+    nombre: String!
+    precio: Float!
+    promociones: [Promocion!]!
+}
+
+
+type Promocion {
+    promocionId: ID!
+    titulo: String!
+    descripcion: String
+    fechaInicio: String!
+    fechaFin: String!
+    porcentajeDescuento: Float!
+    activa: Boolean!
+    productos: [Producto!]!
+}
+
+# ======================
+# INPUT TYPES
+# ======================
+
+input ProductoInput {
+    nombre: String!
+    precio: Float!
+}
+
+
+input PromocionInput {
+    titulo: String!
+    descripcion: String
+    fechaInicio: String!
+    fechaFin: String!
+    porcentajeDescuento: Float!
+    activa: Boolean = true
+}
+
+input PromocionProductoInput {
+    productoId: ID!
+    promocionId: ID!
+}
+
+# ======================
+# QUERIES
+# ======================
+
+type Query {
+    productos: [Producto!]!
+    obtenerProductoPorId(id: ID!): Producto
+
+    promociones: [Promocion!]!
+    obtenerPromocionPorId(id: ID!): Promocion
+    promocionesdasboard(activa: Boolean): [Promocion!]!
+
+    usuarios: [Usuario]
+    usuario(usuarioId: ID!): Usuario
+    usuariosPorRol(rol: String!): [Usuario]
+}
+
+type Usuario {
+    usuarioId: ID!
+    nombreUsuario: String!
+    rol: String!
+    estado: String!
+    fechaCreacion: String!
+}
+
+type Mutation {
+    crearPromocion(input: PromocionInput!): Promocion!
+    actualizarPromocion(id: ID!, input: PromocionInput!): Promocion!
+    deletePromocion(id: ID!): Boolean
+}
+
+
+
+
