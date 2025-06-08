@@ -9,7 +9,6 @@ type Producto {
     promociones: [Promocion!]!
 }
 
-
 type Promocion {
     promocionId: ID!
     titulo: String!
@@ -18,6 +17,7 @@ type Promocion {
     fechaFin: String!
     porcentajeDescuento: Float!
     activa: Boolean!
+    categoria: String   # <-- nuevo campo agregado aquí
     productos: [Producto!]!
 }
 
@@ -30,7 +30,6 @@ input ProductoInput {
     precio: Float!
 }
 
-
 input PromocionInput {
     titulo: String!
     descripcion: String
@@ -38,6 +37,7 @@ input PromocionInput {
     fechaFin: String!
     porcentajeDescuento: Float!
     activa: Boolean = true
+    categoria: String    # <-- nuevo campo agregado aquí
 }
 
 input PromocionProductoInput {
@@ -52,6 +52,7 @@ input PromocionProductoInput {
 type Query {
     productos: [Producto!]!
     obtenerProductoPorId(id: ID!): Producto
+    promocionesCategoria(categoria: String!): [Promocion!]!
 
     promociones: [Promocion!]!
     obtenerPromocionPorId(id: ID!): Promocion
@@ -70,12 +71,12 @@ type Usuario {
     fechaCreacion: String!
 }
 
+# ======================
+# MUTATIONS
+# ======================
+
 type Mutation {
     crearPromocion(input: PromocionInput!): Promocion!
     actualizarPromocion(id: ID!, input: PromocionInput!): Promocion!
     deletePromocion(id: ID!): Boolean
 }
-
-
-
-

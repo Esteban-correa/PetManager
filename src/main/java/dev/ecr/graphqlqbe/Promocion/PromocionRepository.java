@@ -9,4 +9,9 @@ import java.util.List;
 @GraphQlRepository
 public interface PromocionRepository extends JpaRepository<Promocion, Integer>, QueryByExampleExecutor<Promocion> {
     List<Promocion> findByActiva(Boolean activa);
+
+    List<Promocion> findByCategoria(String categoria);
+
+    // O si quieres ignorar mayúsculas/minúsculas
+    // List<Promocion> findByCategoriaIgnoreCase(String categoria);
 }

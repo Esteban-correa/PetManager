@@ -15,13 +15,11 @@ public class PromocionResolver {
         this.promocionRepository = promocionRepository;
     }
 
-    // Resolver para la query 'promociones'
     @QueryMapping
     public List<Promocion> promociones() {
         return promocionRepository.findAll();
     }
 
-    // Resolver para la query 'promocionesdasboard'
     @QueryMapping
     public List<Promocion> promocionesdasboard(@Argument Boolean activa) {
         if (activa != null) {
@@ -30,9 +28,13 @@ public class PromocionResolver {
         return promocionRepository.findAll();
     }
 
-    // Resolver para obtener promoción por ID
     @QueryMapping
     public Promocion obtenerPromocionPorId(@Argument Integer id) {
         return promocionRepository.findById(id).orElse(null);
+    }
+
+    @QueryMapping
+    public List<Promocion> promocionesCategoria(@Argument String categoria) {
+        return promocionRepository.findByCategoria(categoria);
     }
 }

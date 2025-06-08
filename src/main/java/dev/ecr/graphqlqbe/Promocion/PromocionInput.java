@@ -7,6 +7,7 @@ public class PromocionInput {
     private String fechaFin;
     private Double porcentajeDescuento;
     private Boolean activa;
+    private String categoria; // ← NUEVO
 
     // Getters
     public String getTitulo() {
@@ -33,6 +34,10 @@ public class PromocionInput {
         return activa;
     }
 
+    public String getCategoria() { // ← NUEVO
+        return categoria;
+    }
+
     // Setters
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -56,5 +61,9 @@ public class PromocionInput {
 
     public void setActiva(Boolean activa) {
         this.activa = activa;
+    }
+
+    public void setCategoria(String categoria) { // ← NUEVO
+        this.categoria = categoria;
     }
 }

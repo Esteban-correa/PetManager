@@ -47,26 +47,10 @@ public class DataLoader implements CommandLineRunner {
                         LocalDate.now().plusDays(10),
                         30.0,
                         true,
+                        "perro",
                         Collections.emptyList()
                 ),
-                new Promocion(
-                        "2x1 en Accesorios",
-                        "Compra uno y llévate otro gratis en todos los accesorios",
-                        LocalDate.now().plusDays(1),
-                        LocalDate.now().plusDays(5),
-                        50.0,  // Simula como si fuese 50% por 2x1
-                        true,
-                        Collections.emptyList()
-                ),
-                new Promocion(
-                        "Fin de Temporada",
-                        "Descuentos hasta del 60% por cierre de temporada",
-                        LocalDate.now().minusDays(2),
-                        LocalDate.now().plusDays(3),
-                        60.0,
-                        true,
-                        Collections.emptyList()
-                ),
+
                 new Promocion(
                         "Promoción Expirada",
                         "Esta promoción ya terminó",
@@ -74,6 +58,7 @@ public class DataLoader implements CommandLineRunner {
                         LocalDate.now().minusDays(1),
                         25.0,
                         false,
+                        "gato",
                         Collections.emptyList()
                 )
         );

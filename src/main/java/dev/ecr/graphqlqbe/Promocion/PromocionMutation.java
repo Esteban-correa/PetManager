@@ -8,7 +8,6 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Controller
 public class PromocionMutation {
@@ -19,6 +18,7 @@ public class PromocionMutation {
         this.promocionRepository = promocionRepository;
     }
 
+    // Eliminar promoción
     @MutationMapping
     public Boolean deletePromocion(@Argument Integer id) {
         if (promocionRepository.existsById(id)) {
@@ -44,11 +44,11 @@ public class PromocionMutation {
         promocion.setFechaFin(LocalDate.parse(input.getFechaFin()));
         promocion.setPorcentajeDescuento(input.getPorcentajeDescuento());
         promocion.setActiva(input.getActiva() != null ? input.getActiva() : true);
+        promocion.setCategoria(input.getCategoria()); // <--- NUEVA LÍNEA
         promocion.setProductos(null); // o Collections.emptyList()
 
         return promocionRepository.save(promocion);
     }
-
 
     // Actualizar promoción
     @MutationMapping
@@ -60,9 +60,8 @@ public class PromocionMutation {
             if (input.getFechaFin() != null) promocion.setFechaFin(LocalDate.parse(input.getFechaFin()));
             if (input.getPorcentajeDescuento() != null) promocion.setPorcentajeDescuento(input.getPorcentajeDescuento());
             if (input.getActiva() != null) promocion.setActiva(input.getActiva());
+            if (input.getCategoria() != null) promocion.setCategoria(input.getCategoria()); // <--- NUEVA LÍNEA
             return promocionRepository.save(promocion);
-
         }).orElse(null);
     }
-
 }

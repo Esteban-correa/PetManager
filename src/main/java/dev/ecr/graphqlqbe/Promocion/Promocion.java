@@ -33,6 +33,9 @@ public class Promocion {
     @Column(nullable = false)
     private Boolean activa = true;
 
+    @Column(length = 100)
+    private String categoria;
+
     // Relación muchos a muchos con productos
     @ManyToMany
     @JoinTable(
@@ -47,15 +50,17 @@ public class Promocion {
     public Promocion() {}
 
     public Promocion(String titulo, String descripcion, LocalDate fechaInicio, LocalDate fechaFin,
-                     Double porcentajeDescuento, Boolean activa, List<Producto> productos) {
+                     Double porcentajeDescuento, Boolean activa, String categoria, List<Producto> productos) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.porcentajeDescuento = porcentajeDescuento;
         this.activa = activa;
+        this.categoria = categoria;  // ahora sí, correcto
         this.productos = productos;
     }
+
 
     // Getters and Setters
 
@@ -113,6 +118,14 @@ public class Promocion {
 
     public void setActiva(Boolean activa) {
         this.activa = activa;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public List<Producto> getProductos() {
