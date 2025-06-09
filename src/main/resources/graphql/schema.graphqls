@@ -17,9 +17,18 @@ type Promocion {
     fechaFin: String!
     porcentajeDescuento: Float!
     activa: Boolean!
-    categoria: String   # <-- nuevo campo agregado aquí
+    categoria: String
     productos: [Producto!]!
 }
+
+type Usuario {
+    usuarioId: ID!
+    nombreUsuario: String!
+    rol: String!
+    estado: String!
+    fechaCreacion: String!
+}
+
 
 # ======================
 # INPUT TYPES
@@ -37,12 +46,19 @@ input PromocionInput {
     fechaFin: String!
     porcentajeDescuento: Float!
     activa: Boolean = true
-    categoria: String    # <-- nuevo campo agregado aquí
+    categoria: String
 }
 
 input PromocionProductoInput {
     productoId: ID!
     promocionId: ID!
+}
+
+input UsuarioInput {
+    nombreUsuario: String!
+    contrasena: String!
+    rol: String!
+    estado: String!
 }
 
 # ======================
@@ -59,16 +75,9 @@ type Query {
     promocionesdasboard(activa: Boolean): [Promocion!]!
 
     usuarios: [Usuario]
-    usuario(usuarioId: ID!): Usuario
+    usuario(id: ID!): Usuario
     usuariosPorRol(rol: String!): [Usuario]
-}
-
-type Usuario {
-    usuarioId: ID!
-    nombreUsuario: String!
-    rol: String!
-    estado: String!
-    fechaCreacion: String!
+    usuariosPorEstado(estado: String!): [Usuario]
 }
 
 # ======================
@@ -79,4 +88,9 @@ type Mutation {
     crearPromocion(input: PromocionInput!): Promocion!
     actualizarPromocion(id: ID!, input: PromocionInput!): Promocion!
     deletePromocion(id: ID!): Boolean
+
+    insertarUsuario(input: UsuarioInput!): Usuario!
+    deleteUsuario(id: ID!): Boolean!
+    updateUsuario(id: ID!, input: UsuarioInput!): Usuario!
+    loginUsuario(nombreUsuario: String!, contrasena: String!): Boolean
 }

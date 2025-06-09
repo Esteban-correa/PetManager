@@ -1,31 +1,41 @@
 package dev.ecr.graphqlqbe.Autentificacion;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "autentificacion")
 public class Usuario {
+
     @Id
     @Column(name = "usuario_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usuarioId;
 
-    @Column(name = "nombre_usuario", unique = true, nullable = false)
+    @Column(name = "nombre_usuario")
     private String nombreUsuario;
 
-    @Column(name = "contrasena_hash", nullable = false)
-    private String contrasenaHash;
+    @Column(name = "contrasena_hash")
+    private String contrasena;
 
-    @Column(nullable = false)
     private String rol;
 
-    @Column(nullable = false)
     private String estado;
 
-    @Column(name = "fecha_creacion", nullable = false)
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
+
+    // Constructor vacío
+    public Usuario() {}
+
+    // Constructor completo
+    public Usuario(String nombreUsuario, String contrasena, String rol, String estado, LocalDateTime fechaCreacion) {
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.rol = rol;
+        this.estado = estado;
+        this.fechaCreacion = fechaCreacion;
+    }
 
     // Getters y Setters
     public Long getUsuarioId() {
@@ -44,12 +54,12 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getContrasenaHash() {
-        return contrasenaHash;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContrasenaHash(String contrasenaHash) {
-        this.contrasenaHash = contrasenaHash;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getRol() {
@@ -74,5 +84,17 @@ public class Usuario {
 
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "usuarioId=" + usuarioId +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                ", contrasena='" + contrasena + '\'' +
+                ", rol='" + rol + '\'' +
+                ", estado='" + estado + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                '}';
     }
 }
