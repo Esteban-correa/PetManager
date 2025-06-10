@@ -1,0 +1,96 @@
+# ======================
+# TYPES
+# ======================
+
+type Producto {
+    productoId: ID!
+    nombre: String!
+    precio: Float!
+    promociones: [Promocion!]!
+}
+
+type Promocion {
+    promocionId: ID!
+    titulo: String!
+    descripcion: String
+    fechaInicio: String!
+    fechaFin: String!
+    porcentajeDescuento: Float!
+    activa: Boolean!
+    categoria: String
+    productos: [Producto!]!
+}
+
+type Usuario {
+    usuarioId: ID!
+    nombreUsuario: String!
+    rol: String!
+    estado: String!
+    fechaCreacion: String!
+}
+
+
+# ======================
+# INPUT TYPES
+# ======================
+
+input ProductoInput {
+    nombre: String!
+    precio: Float!
+}
+
+input PromocionInput {
+    titulo: String!
+    descripcion: String
+    fechaInicio: String!
+    fechaFin: String!
+    porcentajeDescuento: Float!
+    activa: Boolean = true
+    categoria: String
+}
+
+input PromocionProductoInput {
+    productoId: ID!
+    promocionId: ID!
+}
+
+input UsuarioInput {
+    nombreUsuario: String!
+    contrasena: String!
+    rol: String!
+    estado: String!
+}
+
+# ======================
+# QUERIES
+# ======================
+
+type Query {
+    productos: [Producto!]!
+    obtenerProductoPorId(id: ID!): Producto
+    promocionesCategoria(categoria: String!): [Promocion!]!
+
+    promociones: [Promocion!]!
+    obtenerPromocionPorId(id: ID!): Promocion
+    promocionesdasboard(activa: Boolean): [Promocion!]!
+
+    usuarios: [Usuario]
+    usuario(id: ID!): Usuario
+    usuariosPorRol(rol: String!): [Usuario]
+    usuariosPorEstado(estado: String!): [Usuario]
+}
+
+# ======================
+# MUTATIONS
+# ======================
+
+type Mutation {
+    crearPromocion(input: PromocionInput!): Promocion!
+    actualizarPromocion(id: ID!, input: PromocionInput!): Promocion!
+    deletePromocion(id: ID!): Boolean
+
+    insertarUsuario(input: UsuarioInput!): Usuario!
+    deleteUsuario(id: ID!): Boolean!
+    updateUsuario(id: ID!, input: UsuarioInput!): Usuario!
+    loginUsuario(nombreUsuario: String!, contrasena: String!): String!
+}
