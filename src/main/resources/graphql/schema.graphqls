@@ -92,5 +92,5 @@ type Mutation {
     insertarUsuario(input: UsuarioInput!): Usuario!
     deleteUsuario(id: ID!): Boolean!
     updateUsuario(id: ID!, input: UsuarioInput!): Usuario!
-    loginUsuario(nombreUsuario: String!, contrasena: String!): Boolean
+    loginUsuario(nombreUsuario: String!, contrasena: String!): String!
 }

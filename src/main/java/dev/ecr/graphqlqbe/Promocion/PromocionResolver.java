@@ -3,6 +3,7 @@ package dev.ecr.graphqlqbe.Promocion;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -16,11 +17,13 @@ public class PromocionResolver {
     }
 
     @QueryMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<Promocion> promociones() {
         return promocionRepository.findAll();
     }
 
     @QueryMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Promocion> promocionesdasboard(@Argument Boolean activa) {
         if (activa != null) {
             return promocionRepository.findByActiva(activa);
@@ -29,11 +32,13 @@ public class PromocionResolver {
     }
 
     @QueryMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public Promocion obtenerPromocionPorId(@Argument Integer id) {
         return promocionRepository.findById(id).orElse(null);
     }
 
     @QueryMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<Promocion> promocionesCategoria(@Argument String categoria) {
         return promocionRepository.findByCategoria(categoria);
     }

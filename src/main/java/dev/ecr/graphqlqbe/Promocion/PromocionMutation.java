@@ -6,6 +6,7 @@ import dev.ecr.graphqlqbe.Promocion.PromocionRepository;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.time.LocalDate;
 
@@ -19,6 +20,7 @@ public class PromocionMutation {
     }
 
     // Eliminar promoción
+    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public Boolean deletePromocion(@Argument Integer id) {
         if (promocionRepository.existsById(id)) {
@@ -35,6 +37,7 @@ public class PromocionMutation {
     }
 
     // Crear promoción
+    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public Promocion crearPromocion(@Argument("input") PromocionInput input) {
         Promocion promocion = new Promocion();
@@ -44,13 +47,14 @@ public class PromocionMutation {
         promocion.setFechaFin(LocalDate.parse(input.getFechaFin()));
         promocion.setPorcentajeDescuento(input.getPorcentajeDescuento());
         promocion.setActiva(input.getActiva() != null ? input.getActiva() : true);
-        promocion.setCategoria(input.getCategoria()); // <--- NUEVA LÍNEA
-        promocion.setProductos(null); // o Collections.emptyList()
+        promocion.setCategoria(input.getCategoria());
+        promocion.setProductos(null);
 
         return promocionRepository.save(promocion);
     }
 
     // Actualizar promoción
+    @PreAuthorize("hasRole('ADMIN')")
     @MutationMapping
     public Promocion actualizarPromocion(@Argument Integer id, @Argument("input") PromocionInput input) {
         return promocionRepository.findById(id).map(promocion -> {
@@ -60,7 +64,7 @@ public class PromocionMutation {
             if (input.getFechaFin() != null) promocion.setFechaFin(LocalDate.parse(input.getFechaFin()));
             if (input.getPorcentajeDescuento() != null) promocion.setPorcentajeDescuento(input.getPorcentajeDescuento());
             if (input.getActiva() != null) promocion.setActiva(input.getActiva());
-            if (input.getCategoria() != null) promocion.setCategoria(input.getCategoria()); // <--- NUEVA LÍNEA
+            if (input.getCategoria() != null) promocion.setCategoria(input.getCategoria());
             return promocionRepository.save(promocion);
         }).orElse(null);
     }

@@ -1,5 +1,6 @@
 package dev.ecr.graphqlqbe.Autentificacion;
 
+import dev.ecr.graphqlqbe.Auth.Config.JwtUtil;
 import dev.ecr.graphqlqbe.Utilities.PasswordEncryptor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -14,10 +15,14 @@ public class UsuarioResolver {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncryptor passwordEncryptor;
 
-    public UsuarioResolver(UsuarioRepository usuarioRepository, PasswordEncryptor passwordEncryptor) {
+    private final JwtUtil jwtUtil;
+
+    public UsuarioResolver(UsuarioRepository usuarioRepository, PasswordEncryptor passwordEncryptor, JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncryptor = passwordEncryptor;
+        this.jwtUtil = jwtUtil;
     }
+
 
     @QueryMapping
     public List<Usuario> usuarios() {
@@ -71,9 +76,15 @@ public class UsuarioResolver {
     }
 
     @MutationMapping(name = "loginUsuario")
-    public Boolean login(@Argument String nombreUsuario, @Argument String contrasena) {
-        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario).orElse(null);
-        if (usuario == null) return false;
-        return passwordEncryptor.matches(contrasena, usuario.getContrasena());
+    public String loginUsuario(@Argument String nombreUsuario, @Argument String contrasena) {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(nombreUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (!passwordEncryptor.matches(contrasena, usuario.getContrasena())) {
+            throw new RuntimeException("Contraseña incorrecta");
+        }
+
+        return jwtUtil.generateToken(usuario.getNombreUsuario(), usuario.getRol());
     }
+
 }
