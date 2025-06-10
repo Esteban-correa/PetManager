@@ -16,12 +16,14 @@ public class PromocionResolver {
         this.promocionRepository = promocionRepository;
     }
 
+    // ✅ Visible para todos los usuarios autenticados (ADMIN o USUARIO)
     @QueryMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<Promocion> promociones() {
         return promocionRepository.findAll();
     }
 
+    // ✅ Solo visible para ADMIN
     @QueryMapping
     @PreAuthorize("hasRole('ADMIN')")
     public List<Promocion> promocionesdasboard(@Argument Boolean activa) {
@@ -31,12 +33,14 @@ public class PromocionResolver {
         return promocionRepository.findAll();
     }
 
+    // ✅ Visible para ADMIN o USUARIO
     @QueryMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public Promocion obtenerPromocionPorId(@Argument Integer id) {
         return promocionRepository.findById(id).orElse(null);
     }
 
+    // ✅ Visible para ADMIN o USUARIO
     @QueryMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<Promocion> promocionesCategoria(@Argument String categoria) {

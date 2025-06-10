@@ -6,17 +6,19 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "clave-secreta-supersegura-para-jwt-1234567890"; // mínimo 32 caracteres
-    private final long EXPIRATION_TIME = 86400000; // 1 día en milisegundos
+    private static final String SECRET = "clave-secreta-supersegura-para-jwt-1234567890";
+    private static final long EXPIRATION_TIME = 86400000L; // 1 día en milisegundos
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
+    // 🔐 Generar un JWT con username y rol
     public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
@@ -27,23 +29,37 @@ public class JwtUtil {
                 .compact();
     }
 
+    // 📤 Extraer claims completos del token
     public Claims extractClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String getUsername(String token) {
-        return extractClaims(token).getSubject();
+    // 📌 Extraer un claim específico (genérico)
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractClaims(token);
+        return claimsResolver.apply(claims);
     }
 
-    public String getRole(String token) {
-        return extractClaims(token).get("role", String.class);
+    // 📛 Extraer el username (subject)
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
+    // 🎭 Extraer el rol del usuario
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+    // ✅ Validar si el token es correcto y no expiró
     public boolean isTokenValid(String token) {
         try {
-            extractClaims(token);
-            return true;
-        } catch (Exception e) {
+            Claims claims = extractClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
