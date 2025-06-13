@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 
-@Component
+//@Component
 public class DataLoader implements CommandLineRunner {
     private final PromocionRepository repository;
     private final UsuarioRepository usuarioRepository;

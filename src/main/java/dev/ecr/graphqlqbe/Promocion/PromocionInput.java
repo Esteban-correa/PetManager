@@ -1,5 +1,7 @@
 package dev.ecr.graphqlqbe.Promocion;
 
+import java.util.List;
+
 public class PromocionInput {
     private String titulo;
     private String descripcion;
@@ -7,7 +9,8 @@ public class PromocionInput {
     private String fechaFin;
     private Double porcentajeDescuento;
     private Boolean activa;
-    private String categoria; // ← NUEVO
+    private String categoria;
+    private List<Integer> productoIds; // ← NUEVO
 
     // Getters
     public String getTitulo() {
@@ -34,8 +37,12 @@ public class PromocionInput {
         return activa;
     }
 
-    public String getCategoria() { // ← NUEVO
+    public String getCategoria() {
         return categoria;
+    }
+
+    public List<Integer> getProductoIds() {
+        return productoIds;
     }
 
     // Setters
@@ -63,7 +70,11 @@ public class PromocionInput {
         this.activa = activa;
     }
 
-    public void setCategoria(String categoria) { // ← NUEVO
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public void setProductoIds(List<Integer> productoIds) {
+        this.productoIds = productoIds;
     }
 }

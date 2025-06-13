@@ -36,8 +36,10 @@ type Usuario {
 
 input ProductoInput {
     nombre: String!
-    precio: Float!
+    precio: Float!  # Float en GraphQL ≈ Double en Java
 }
+
+
 
 input PromocionInput {
     titulo: String!
@@ -47,6 +49,7 @@ input PromocionInput {
     porcentajeDescuento: Float!
     activa: Boolean = true
     categoria: String
+    productoIds: [ID!]
 }
 
 input PromocionProductoInput {
@@ -85,6 +88,8 @@ type Query {
 # ======================
 
 type Mutation {
+    crearProducto(input: ProductoInput!): Producto!
+
     crearPromocion(input: PromocionInput!): Promocion!
     actualizarPromocion(id: ID!, input: PromocionInput!): Promocion!
     deletePromocion(id: ID!): Boolean

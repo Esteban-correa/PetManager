@@ -20,7 +20,7 @@ public class PromocionResolver {
     @QueryMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<Promocion> promociones() {
-        return promocionRepository.findAll();
+        return promocionRepository.findAllWithProductos(); // <-- Carga productos automáticamente
     }
 
     // ✅ Solo visible para ADMIN

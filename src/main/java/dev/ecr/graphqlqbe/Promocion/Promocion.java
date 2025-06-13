@@ -37,7 +37,7 @@ public class Promocion {
     private String categoria;
 
     // Relación muchos a muchos con productos
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "promocion_producto",
             joinColumns = @JoinColumn(name = "promocion_id"),
@@ -45,7 +45,7 @@ public class Promocion {
     )
     private List<Producto> productos;
 
-    // Constructors
+    // Constructores
 
     public Promocion() {}
 
@@ -57,12 +57,11 @@ public class Promocion {
         this.fechaFin = fechaFin;
         this.porcentajeDescuento = porcentajeDescuento;
         this.activa = activa;
-        this.categoria = categoria;  // ahora sí, correcto
+        this.categoria = categoria;
         this.productos = productos;
     }
 
-
-    // Getters and Setters
+    // Getters y Setters
 
     public Integer getPromocionId() {
         return promocionId;
@@ -104,11 +103,11 @@ public class Promocion {
         this.fechaFin = fechaFin;
     }
 
-    public Double getPorcentajeDescuento() {
+    public double getPorcentajeDescuento() {
         return porcentajeDescuento;
     }
 
-    public void setPorcentajeDescuento(Double porcentajeDescuento) {
+    public void setPorcentajeDescuento(double porcentajeDescuento) {
         this.porcentajeDescuento = porcentajeDescuento;
     }
 
